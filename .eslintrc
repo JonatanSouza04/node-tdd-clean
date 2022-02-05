@@ -13,5 +13,8 @@
       "node": true,
       "jest": true,
     },
-    "ignorePatterns": [".eslintrc.js"]
+    "ignorePatterns": [".eslintrc.js"],
+    "rules": {
+      "@typescript-eslint/strict-boolean-expressions": "off"
+    }
 }
