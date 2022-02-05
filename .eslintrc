@@ -1,6 +1,17 @@
 {
-    "extends": "standard-with-typescript",
+    "extends": [
+          "standard-with-typescript",
+          "plugin:@typescript-eslint/recommended",
+          "plugin:prettier/recommended"
+    ],
     "parserOptions": {
-        "project": "./tsconfig.json"
-    }
+        "project": "tsconfig.json",
+        "sourceType": "module"
+    },
+    "root": true,
+    "env": {
+      "node": true,
+      "jest": true,
+    },
+    "ignorePatterns": [".eslintrc.js"],
 }
