@@ -197,4 +197,24 @@ describe('SignUp Controller', () => {
       password: '123456',
     });
   });
+
+  test('Should return 500 if Account throws', () => {
+    const { sut, addAccountStub } = makeSut();
+    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpRequest = {
+      body: {
+        name: 'Jonatan Souza',
+        email: 'invalid_email@gmail.com',
+        password: '123456',
+        passwordConfirm: '123456',
+      },
+    };
+
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
 });
