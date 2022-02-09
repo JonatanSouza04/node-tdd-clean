@@ -1,16 +1,21 @@
 const config = {
   clearMocks: true,
   collectCoverage: true,
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  coverageProvider: 'babel',
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/main/**',
+    '!<rootDir>/src/**/*-protocols.ts',
+    '!**/protocols/**',
+    '!**/test/**',
+  ],
   coverageDirectory: 'coverage',
   // coverageProvider: 'v8',
-  roots: [
-    '<rootDir>/src'
-  ],
+  roots: ['<rootDir>/src'],
   testEnvironment: 'node',
   transform: {
-    '.+\\.ts$': 'ts-jest'
-  }
-}
+    '.+\\.ts$': 'ts-jest',
+  },
+};
 
-module.exports = config
+module.exports = config;
