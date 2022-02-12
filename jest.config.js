@@ -16,7 +16,7 @@ const config = {
   transform: {
     '.+\\.ts$': 'ts-jest',
   },
-  preset: '@shelf/jes-mongodb',
+  preset: '@shelf/jest-mongodb',
 };
 
 module.exports = config;
