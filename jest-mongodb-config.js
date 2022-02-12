@@ -5,7 +5,7 @@ module.exports = {
     },
     binary: {
       version: '4.0.3',
-      skiMD5: true,
+      skipMD5: true,
     },
     autoStart: false,
   },
