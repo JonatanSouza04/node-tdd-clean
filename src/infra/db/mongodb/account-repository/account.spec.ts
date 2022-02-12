@@ -3,7 +3,7 @@ import { AccountMongoRepository } from './account';
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository();
-}
+};
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
@@ -18,7 +18,7 @@ describe('Account Mongo Repository', () => {
     const accountColletion = MongoHelper.getCollection('accounts');
     await accountColletion.deleteMany({});
   });
-  
+
   test('Should return an account on sucess', async () => {
     const sut = makeSut();
     const account = await sut.add({
