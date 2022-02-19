@@ -8,6 +8,7 @@ const config = {
     '!<rootDir>/src/**/*-protocols.ts',
     '!**/protocols/**',
     '!**/test/**',
+    '<rootDir>/src/main/decorators/*.ts',
   ],
   coverageDirectory: 'coverage',
   // coverageProvider: 'v8',
