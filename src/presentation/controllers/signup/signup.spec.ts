@@ -206,7 +206,7 @@ describe('SignUp Controller', () => {
     };
 
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(serverError(new ServerError()));
+    expect(httpResponse).toEqual(serverError(new ServerError('Error Intern')));
   });
 
   test('Should return 200 if valid data is provided', async () => {
