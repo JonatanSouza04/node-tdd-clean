@@ -1,6 +1,6 @@
 import { MongoHelper as sut } from './mongo-helper';
 
-describe('', () => {
+describe('Mongo Helper', () => {
   beforeAll(async () => {
     await sut.connect(process.env.MONGO_URL as string);
   });
@@ -9,11 +9,11 @@ describe('', () => {
     await sut.disconnect();
   });
 
-  test('Should reconnect if mongodb is down', async () => {
-    let accountColletion = await sut.getCollection('accounts');
-    expect(accountColletion).toBeTruthy();
+  test('Should reconnect if mongodb is down ', async () => {
+    let accountCollection = await sut.getCollection('accounts');
+    expect(accountCollection).toBeTruthy();
     await sut.disconnect();
-    accountColletion = await sut.getCollection('accounts');
-    expect(accountColletion).toBeTruthy();
+    accountCollection = await sut.getCollection('accounts');
+    expect(accountCollection).toBeTruthy();
   });
 });
