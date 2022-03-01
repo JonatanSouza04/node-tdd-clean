@@ -6,6 +6,7 @@ import {
   AddAccount,
   AddAccountModel,
   HttpRequest,
+  Validation,
 } from './signup-protocols';
 
 import { ok, serverError, badRequest } from '../../helpers/http-helper';
@@ -16,6 +17,7 @@ const makeEmailValidator = (): EmailValidator => {
       return true;
     }
   }
+
   return new EmailValidatorStub();
 };
 
@@ -26,6 +28,16 @@ const makeAddAccount = (): AddAccount => {
     }
   }
   return new AddAccountStub();
+};
+
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate(input: any): Error {
+      return null as unknown as Error;
+    }
+  }
+
+  return new ValidationStub();
 };
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -48,17 +60,25 @@ interface SutTypes {
   sut: SignUpController;
   emailValidatorStub: EmailValidator;
   addAccountStub: AddAccount;
+  validationStub: Validation;
 }
 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator();
   const addAccountStub = makeAddAccount();
-  const sut = new SignUpController(emailValidatorStub, addAccountStub);
+  const validationStub = makeValidation();
+  const sut = new SignUpController(
+    emailValidatorStub,
+
+    addAccountStub,
+    validationStub,
+  );
 
   return {
     sut,
     emailValidatorStub,
     addAccountStub,
+    validationStub,
   };
 };
 
@@ -173,16 +193,7 @@ describe('SignUp Controller', () => {
     const { sut, addAccountStub } = makeSut();
     const addSpy = jest.spyOn(addAccountStub, 'add');
 
-    const httpRequest = {
-      body: {
-        name: 'Jonatan Souza',
-        email: 'invalid_email@gmail.com',
-        password: '123456',
-        passwordConfirm: '123456',
-      },
-    };
-
-    await sut.handle(httpRequest);
+    await sut.handle(makeFakeRequest());
     expect(addSpy).toHaveBeenCalledWith({
       name: 'Jonatan Souza',
       email: 'invalid_email@gmail.com',
@@ -196,32 +207,23 @@ describe('SignUp Controller', () => {
       return await new Promise((resolve, reject) => reject(new Error()));
     });
 
-    const httpRequest = {
-      body: {
-        name: 'Jonatan Souza',
-        email: 'invalid_email@gmail.com',
-        password: '123456',
-        passwordConfirm: '123456',
-      },
-    };
-
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new ServerError('Error Intern')));
   });
 
   test('Should return 200 if valid data is provided', async () => {
     const { sut } = makeSut();
-
-    const httpRequest = {
-      body: {
-        name: 'valid_name',
-        email: 'valid_email@gmail.com',
-        password: 'valid_password',
-        passwordConfirm: 'valid_password',
-      },
-    };
-
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(ok(makeFakeAccount()));
+  });
+
+  test('Should call Validation with correct value', async () => {
+    const { sut, validationStub } = makeSut();
+    const validateSpy = jest.spyOn(validationStub, 'validate');
+
+    const httpRequest = makeFakeRequest();
+    await sut.handle(httpRequest);
+
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
   });
 });
