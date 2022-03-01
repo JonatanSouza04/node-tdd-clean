@@ -7,6 +7,7 @@ import {
 import { InvalidParamError, MissingParamError } from '../../erros';
 
 import { EmailValidator, HttpRequest, Authentication } from './login-protocols';
+import { resolve } from 'path';
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -115,5 +116,16 @@ describe('Login Controller', () => {
 
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(unAuthorized());
+  });
+
+  test('Should return 500 if Authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut();
+    jest
+      .spyOn(authenticationStub, 'auth')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error())),
+      );
+    const httpResponse = await sut.handle(makeFakeRequest());
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });
