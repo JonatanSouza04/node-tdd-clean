@@ -40,13 +40,13 @@ export class LoginController implements Controller {
         return badRequest(new InvalidParamError('email'));
       }
 
-      const auth = await this.authentication.auth(email, password);
+      const accessToken = await this.authentication.auth(email, password);
 
-      if (!auth) {
+      if (!accessToken) {
         return unAuthorized();
       }
 
-      return ok(auth);
+      return ok({ accessToken });
     } catch (error) {
       return serverError(error);
     }
