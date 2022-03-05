@@ -1,5 +1,5 @@
 import { ValidationComposite } from './validation-composite';
-import { Validation } from './validation';
+import { Validation } from '../../protocols/validation';
 import { RequiredFieldValidation } from './required-field-validation';
 import { MissingParamError } from '../../erros';
 
