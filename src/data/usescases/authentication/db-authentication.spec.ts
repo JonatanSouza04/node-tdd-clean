@@ -2,6 +2,8 @@ import { AccountModel } from '../add-account/db-add-account-protocols';
 import { LoadAccountByEmailRepository } from '../../../data/protocols/load-account-by-email-repository';
 import { DbAuthentication } from './db-autentication';
 import { AuthenticationModel } from '../../../domain/usecases/authentication';
+import { resolve } from 'path';
+import { rejects } from 'assert';
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'any_id',
@@ -48,5 +50,16 @@ describe('DbAuthentication UseCase', () => {
     const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'load');
     sut.auth(makeFakeAuthtentication());
     expect(loadSpy).toHaveBeenCalledWith('any_email@email.com');
+  });
+
+  test('Should throw if LoadAccountByEmailRepository thorws', () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'load')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error())),
+      );
+    const promise = sut.auth(makeFakeAuthtentication());
+    expect(promise).rejects.toThrow();
   });
 });
