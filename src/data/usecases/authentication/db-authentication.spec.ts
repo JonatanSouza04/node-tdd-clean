@@ -3,6 +3,7 @@ import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by
 import { DbAuthentication } from './db-autentication';
 import { AuthenticationModel } from '../../../domain/usecases/authentication';
 import { HashComparer } from '../../protocols/cryptography/hash-comparer';
+import { TokenGenerator } from '../../protocols/cryptography/token-generator';
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'any_id',
@@ -20,6 +21,7 @@ interface SutTypes {
   sut: DbAuthentication;
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository;
   hashComparerStub: HashComparer;
+  tokenGeneratorStub: TokenGenerator;
 }
 
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
@@ -44,18 +46,31 @@ const makeHashComparer = (): HashComparer => {
   return new HashComparerStub();
 };
 
+const makeTokenGenerator = (): TokenGenerator => {
+  class HashComparerStub implements TokenGenerator {
+    async generate(id: string): Promise<string> {
+      return await new Promise((resolve) => resolve('any_token'));
+    }
+  }
+
+  return new HashComparerStub();
+};
+
 const makeSut = (): SutTypes => {
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
   const hashComparerStub = makeHashComparer();
+  const tokenGeneratorStub = makeTokenGenerator();
   const sut = new DbAuthentication(
     loadAccountByEmailRepositoryStub,
     hashComparerStub,
+    tokenGeneratorStub,
   );
 
   return {
     sut,
     loadAccountByEmailRepositoryStub,
     hashComparerStub,
+    tokenGeneratorStub,
   };
 };
 
@@ -115,5 +130,12 @@ describe('DbAuthentication UseCase', () => {
 
     const accessToken = await sut.auth(makeFakeAuthtentication());
     expect(accessToken).toBeNull();
+  });
+
+  test('Should call TokenGenerator with correct id', async () => {
+    const { sut, tokenGeneratorStub } = makeSut();
+    const gereratorSpy = jest.spyOn(tokenGeneratorStub, 'generate');
+    await sut.auth(makeFakeAuthtentication());
+    expect(gereratorSpy).toHaveBeenCalledWith('any_id');
   });
 });
