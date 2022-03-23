@@ -2,17 +2,17 @@ import {
   AccountModel,
   AddAccountRepository,
   AddAccountModel,
-  Encrypter,
+  Hasher,
 } from './db-add-account-protocols';
 import { DbAddAccount } from './db-add-account';
 
-const makeEncrypter = (): Encrypter => {
-  class EncrypterStub implements Encrypter {
-    async encrypt(value: string): Promise<string> {
+const makeHasher = (): Hasher => {
+  class HasherStub implements Hasher {
+    async hash(value: string): Promise<string> {
       return await new Promise((resolve) => resolve('hashed_password'));
     }
   }
-  return new EncrypterStub();
+  return new HasherStub();
 };
 
 const makeAddAccountRepository = (): AddAccountRepository => {
@@ -33,12 +33,12 @@ const makeAddAccountRepository = (): AddAccountRepository => {
 
 interface SutTypes {
   sut: DbAddAccount;
-  encrypterStub: Encrypter;
+  encrypterStub: Hasher;
   addAccountRepositoryStub: AddAccountRepository;
 }
 
 const makeSut = (): SutTypes => {
-  const encrypterStub = makeEncrypter();
+  const encrypterStub = makeHasher();
   const addAccountRepositoryStub = makeAddAccountRepository();
   const sut = new DbAddAccount(encrypterStub, addAccountRepositoryStub);
 
@@ -50,10 +50,10 @@ const makeSut = (): SutTypes => {
 };
 
 describe('DbAddAccount UseCase', () => {
-  test('Should call encrypter with correct password', async () => {
+  test('Should call hasher with correct password', async () => {
     const { sut, encrypterStub } = makeSut();
 
-    const encryptSpy = jest.spyOn(encrypterStub, 'encrypt');
+    const encryptSpy = jest.spyOn(encrypterStub, 'hash');
     const accountData = {
       name: 'valid_name',
       email: 'valid_email',
@@ -64,11 +64,11 @@ describe('DbAddAccount UseCase', () => {
     expect(encryptSpy).toHaveBeenCalledWith('valid_password');
   });
 
-  test('Should throw if encrypter throws', async () => {
+  test('Should throw if hasher throws', async () => {
     const { sut, encrypterStub } = makeSut();
 
     jest
-      .spyOn(encrypterStub, 'encrypt')
+      .spyOn(encrypterStub, 'hash')
       .mockReturnValueOnce(
         new Promise((resolve, reject) => reject(new Error())),
       );
