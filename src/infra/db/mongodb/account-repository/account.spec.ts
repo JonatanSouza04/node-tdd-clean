@@ -1,5 +1,8 @@
+import { Collection } from 'mongodb';
 import { MongoHelper } from '../helpers/mongo-helper';
 import { AccountMongoRepository } from './account';
+
+let accountColletion: Collection;
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository();
@@ -15,11 +18,11 @@ describe('Account Mongo Repository', () => {
   });
 
   beforeEach(async () => {
-    const accountColletion = await MongoHelper.getCollection('accounts');
+    accountColletion = await MongoHelper.getCollection('accounts');
     await accountColletion.deleteMany({});
   });
 
-  test('Should return an account on sucess', async () => {
+  test('Should return an account on add sucess', async () => {
     const sut = makeSut();
     const account = await sut.add({
       name: 'any_name',
@@ -32,5 +35,28 @@ describe('Account Mongo Repository', () => {
     expect(account.name).toBe('any_name');
     expect(account.email).toBe('any_email@gmail.com');
     expect(account.password).toBe('any_password');
+  });
+
+  test('Should return an account on loadByEmail success', async () => {
+    const sut = makeSut();
+    await accountColletion.insertOne({
+      name: 'any_name',
+      email: 'any_email@gmail.com',
+      password: 'any_password',
+    });
+
+    const account = await sut.loadByEmail('any_email@gmail.com');
+
+    expect(account).toBeTruthy();
+    expect(account.id).toBeTruthy();
+    expect(account.name).toBe('any_name');
+    expect(account.email).toBe('any_email@gmail.com');
+  });
+
+  test('Should return null on loadByEmail fails', async () => {
+    const sut = makeSut();
+    const account = await sut.loadByEmail('any_email@gmail.com');
+
+    expect(account).toBeFalsy();
   });
 });
