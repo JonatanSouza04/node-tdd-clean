@@ -10,7 +10,7 @@ const makeSut = (): AccountMongoRepository => {
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL as string);
+    await MongoHelper.connect(process.env.MONGO_URL);
   });
 
   afterAll(async () => {
@@ -58,5 +58,24 @@ describe('Account Mongo Repository', () => {
     const account = await sut.loadByEmail('any_email@gmail.com');
 
     expect(account).toBeFalsy();
+  });
+
+  test('Should update then account accessToken on updateAccessToken success', async () => {
+    const sut = makeSut();
+    const res = await accountColletion.insertOne({
+      name: 'any_name',
+      email: 'any_email@gmail.com',
+      password: 'any_password',
+    });
+
+    const id = res.insertedId.toString();
+
+    await sut.updateAccessToken(id, 'any_token');
+    const account = await accountColletion.findOne({
+      _id: MongoHelper.objectID(id),
+    });
+
+    expect(account).toBeTruthy();
+    expect(account.accessToken).toBe('any_token');
   });
 });
