@@ -3,12 +3,10 @@ import { EmailValidator } from '../../protocols';
 import { Validation } from '../../protocols/validation';
 
 export class EmailValidation implements Validation {
-  private readonly fieldname: string;
-  private readonly emailValidator: EmailValidator;
-  constructor(fieldname: string, emailValidator: EmailValidator) {
-    this.fieldname = fieldname;
-    this.emailValidator = emailValidator;
-  }
+  constructor(
+    private readonly fieldname: string,
+    private readonly emailValidator: EmailValidator,
+  ) {}
 
   validate(input: any): Error {
     const isValidEmail = this.emailValidator.isValid(input[this.fieldname]);
