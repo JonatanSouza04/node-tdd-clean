@@ -5,7 +5,7 @@ services:
       image: mongo:5
       restart: always
       volumes:
-        - ./data:/usr/local/db
+        - ./data:/data/db
       ports:  
         - "27017:27017"
         
