@@ -8,6 +8,8 @@ import { LogControllerDecorator } from '../../decorators/log-controller-decorato
 import { Controller } from '../../../presentation/protocols';
 import { LogMongoRepository } from '../../../infra/db/mongodb/log/log-mongo-repository';
 import { makeSignUpValidation } from './signup-validation-factory';
+import { DbAuthentication } from '../../../data/usecases/authentication/db-authentication';
+import { JWTAdapter } from '../../../infra/criptography/jwt-adapter/jwt-adapter';
 
 export const makeSignUpController = (): Controller => {
   const bcryptAdapter = new BcryptAdapter(env.saltCrypt as number);
@@ -15,9 +17,20 @@ export const makeSignUpController = (): Controller => {
   const dbAddAccount = new DbAddAccount(bcryptAdapter, accountMongoRepository);
   const logMongoRepository = new LogMongoRepository();
 
+  const jwtAdapter = new JWTAdapter(env.jwtSecret);
+
+  const accountMongoRespository = new AccountMongoRepository();
+  const dbAuthentication = new DbAuthentication(
+    accountMongoRespository,
+    bcryptAdapter,
+    jwtAdapter,
+    accountMongoRespository,
+  );
+
   const signUpController = new SignUpController(
     dbAddAccount,
     makeSignUpValidation(),
+    dbAuthentication,
   );
   return new LogControllerDecorator(signUpController, logMongoRepository);
 };
