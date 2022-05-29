@@ -1,4 +1,10 @@
-import { badRequest, serverError, ok } from '../../helpers/http/http-helper';
+import { ForbiddenError } from '../../erros';
+import {
+  badRequest,
+  serverError,
+  ok,
+  forbidden,
+} from '../../helpers/http/http-helper';
 import {
   Controller,
   HttpRequest,
@@ -24,12 +30,15 @@ export class SignUpController implements Controller {
 
       const { name, email, password } = httpRequest.body;
 
-      await this.addAccount.add({
+      const account = await this.addAccount.add({
         name,
         email,
         password,
       });
 
+      if (!account) {
+        return forbidden(new ForbiddenError('Email is already used'));
+      }
       const accessToken = await this.authentication.auth({
         email,
         password,
