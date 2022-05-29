@@ -1,5 +1,5 @@
 import { SignUpController } from './signup-controller';
-import { MissingParamError, ServerError } from '../../erros';
+import { MissingParamError, ServerError, ForbiddenError } from '../../erros';
 import {
   AccountModel,
   AddAccount,
@@ -10,7 +10,12 @@ import {
   AuthenticationModel,
 } from './signup-controller-protocols';
 
-import { ok, serverError, badRequest } from '../../helpers/http/http-helper';
+import {
+  ok,
+  serverError,
+  badRequest,
+  forbidden,
+} from '../../helpers/http/http-helper';
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -103,6 +108,17 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new ServerError('Error Intern')));
+  });
+
+  test('Should return 403 if AddAccount returns null', async () => {
+    const { sut, addAccountStub } = makeSut();
+    jest
+      .spyOn(addAccountStub, 'add')
+      .mockResolvedValueOnce(new Promise((resolve) => resolve(null)));
+    const httpResponse = await sut.handle(makeFakeRequest());
+    expect(httpResponse).toEqual(
+      forbidden(new ForbiddenError('Email is already used')),
+    );
   });
 
   test('Should returns an token on success', async () => {
