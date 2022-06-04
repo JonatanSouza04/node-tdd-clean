@@ -1,7 +1,7 @@
 import { ValidationComposite } from './validation-composite';
-import { Validation } from '../../protocols/validation';
+import { Validation } from '../../presentation/protocols/validation';
 import { RequiredFieldValidation } from './required-field-validation';
-import { MissingParamError } from '../../erros';
+import { MissingParamError } from '../../presentation/erros';
 
 interface SutTypes {
   sut: Validation;

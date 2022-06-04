@@ -1,22 +1,13 @@
-import { MissingParamError } from '../../erros';
+import { MissingParamError } from '../../presentation/erros';
 import { RequiredFieldValidation } from './required-field-validation';
-import { Validation } from '../../protocols/validation';
 
-interface SutTypes {
-  sut: Validation;
-}
-
-const makeSut = (): SutTypes => {
-  const sut = new RequiredFieldValidation('field');
-
-  return {
-    sut,
-  };
+const makeSut = (): RequiredFieldValidation => {
+  return new RequiredFieldValidation('field');
 };
 
 describe('RequiredField Validation', () => {
   test('Should return a MissingParamErro if validation fails', () => {
-    const { sut } = makeSut();
+    const sut = makeSut();
     const error = sut.validate({
       field: 'any_field',
     });
@@ -24,7 +15,7 @@ describe('RequiredField Validation', () => {
   });
 
   test('Should return an error if 2 CompareFieldValidation returns false', () => {
-    const { sut } = makeSut();
+    const sut = makeSut();
     const error = sut.validate({
       name: 'invalid',
     });
