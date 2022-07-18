@@ -1,5 +1,5 @@
 import env from '../../../config/env';
-import { AccountMongoRepository } from '../../../../infra/db/mongodb/account/account-mongo-respository';
+import { AccountMongoRepository } from '../../../../infra/db/mongodb/account/account-mongo-repository';
 import { BcryptAdapter } from '../../../../infra/criptography/bcrypt-adapter/bcrypt-adapter';
 import { AddAccount } from '../../../../domain/usecases/add-account';
 import { DbAddAccount } from '../../../../data/usecases/add-account/db-add-account';
