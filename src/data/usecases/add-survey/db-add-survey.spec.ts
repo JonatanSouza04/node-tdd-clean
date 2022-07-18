@@ -10,7 +10,7 @@ interface SutTypes {
   addSurveyRepositoryStub: AddSurveyRespository;
 }
 
-const makeFakeSurvey = (): AddSurveyModel => ({
+const makeFakeSurveyData = (): AddSurveyModel => ({
   question: 'any_question',
   answers: [
     {
@@ -42,10 +42,10 @@ const makeSut = (): SutTypes => {
 
 describe('DbAddSurvey UseCase ', () => {
   test('Should call AddSurveyRepository with correct values', async () => {
-    const { sut } = makeSut();
-    const addSurveySpy = jest.spyOn(sut, 'add');
-    const surveyData = makeFakeSurvey();
+    const { sut, addSurveyRepositoryStub } = makeSut();
+    const addSpy = jest.spyOn(addSurveyRepositoryStub, 'add');
+    const surveyData = makeFakeSurveyData();
     await sut.add(surveyData);
-    expect(addSurveySpy).toHaveBeenCalledWith(surveyData);
+    expect(addSpy).toHaveBeenCalledWith(surveyData);
   });
 });
