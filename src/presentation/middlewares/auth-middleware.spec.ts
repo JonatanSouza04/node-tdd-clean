@@ -17,7 +17,7 @@ const makeFakeAccount = (): AccountModel => ({
   password: 'valid_password',
 });
 
-const makeLoadAccountByTokenStub = (): any => {
+const makeLoadAccountByToken = (): any => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
     async load(accessToken: string, role?: string): Promise<AccountModel> {
       return await new Promise((resolve) => resolve(makeFakeAccount()));
@@ -28,7 +28,7 @@ const makeLoadAccountByTokenStub = (): any => {
 };
 
 const makeSut = (): SutTypes => {
-  const loadAccountByToken = makeLoadAccountByTokenStub();
+  const loadAccountByToken = makeLoadAccountByToken();
   const sut = new AuthMiddleware(loadAccountByToken);
 
   return {
@@ -40,14 +40,11 @@ const makeSut = (): SutTypes => {
 describe('Auth Middleware', () => {
   test('Should return 403 if no x-access-token exists in headers', async () => {
     const { sut } = makeSut();
-    const httpRequest: HttpRequest = {
-      headers: {},
-    };
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle({});
     expect(httpResponse).toEqual(forbidden(new ForbiddenError('')));
   });
 
-  test('Should call  LoadAccountByToken with correct a accessToken', async () => {
+  test('Should call LoadAccountByToken with correct a accessToken', async () => {
     const { sut, loadAccountByToken } = makeSut();
     const httpRequest: HttpRequest = {
       headers: {
