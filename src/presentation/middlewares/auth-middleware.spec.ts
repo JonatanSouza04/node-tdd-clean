@@ -1,5 +1,5 @@
 import { HttpRequest } from '../protocols';
-import { forbidden } from '../helpers/http/http-helper';
+import { forbidden, ok } from '../helpers/http/http-helper';
 import { ForbiddenError } from '../erros';
 import { AuthMiddleware } from './auth-middleware';
 import { LoadAccountByToken } from '../../domain/usecases/load-account-by-token';
@@ -55,5 +55,21 @@ describe('Auth Middleware', () => {
     const loadSpy = jest.spyOn(loadAccountByToken, 'load');
     await sut.handle(makeFakeRequest());
     expect(loadSpy).toHaveBeenCalledWith('any_token');
+  });
+
+  test('Should return 403 if LoadAccountByToken returns null', async () => {
+    const { sut, loadAccountByToken } = makeSut();
+    jest
+      .spyOn(loadAccountByToken, 'load')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(null)));
+
+    const httpResponse = await sut.handle(makeFakeRequest());
+    expect(httpResponse).toEqual(forbidden(new ForbiddenError('')));
+  });
+
+  test('Should return 200 if LoadAccountByToken returns an account', async () => {
+    const { sut } = makeSut();
+    const httpResponse = await sut.handle(makeFakeRequest());
+    expect(httpResponse).toEqual(ok({ accountId: 'valid_id' }));
   });
 });
