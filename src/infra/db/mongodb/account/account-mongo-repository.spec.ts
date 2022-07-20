@@ -27,14 +27,14 @@ describe('Account Mongo Repository', () => {
       const sut = makeSut();
       const account = await sut.add({
         name: 'any_name',
-        email: 'any_email@gmail.com',
+        email: 'any_email@imail.com',
         password: 'any_password',
       });
 
       expect(account).toBeTruthy();
       expect(account.id).toBeTruthy();
       expect(account.name).toBe('any_name');
-      expect(account.email).toBe('any_email@gmail.com');
+      expect(account.email).toBe('any_email@imail.com');
       expect(account.password).toBe('any_password');
     });
   });
@@ -44,21 +44,21 @@ describe('Account Mongo Repository', () => {
       const sut = makeSut();
       await accountColletion.insertOne({
         name: 'any_name',
-        email: 'any_email@gmail.com',
+        email: 'any_email@imail.com',
         password: 'any_password',
       });
 
-      const account = await sut.loadByEmail('any_email@gmail.com');
+      const account = await sut.loadByEmail('any_email@imail.com');
 
       expect(account).toBeTruthy();
       expect(account.id).toBeTruthy();
       expect(account.name).toBe('any_name');
-      expect(account.email).toBe('any_email@gmail.com');
+      expect(account.email).toBe('any_email@imail.com');
     });
 
     test('Should return null on loadByEmail fails', async () => {
       const sut = makeSut();
-      const account = await sut.loadByEmail('any_email@gmail.com');
+      const account = await sut.loadByEmail('any_email@imail.com');
 
       expect(account).toBeFalsy();
     });
@@ -69,7 +69,7 @@ describe('Account Mongo Repository', () => {
       const sut = makeSut();
       const res = await accountColletion.insertOne({
         name: 'any_name',
-        email: 'any_email@gmail.com',
+        email: 'any_email@imail.com',
         password: 'any_password',
       });
 
@@ -82,6 +82,24 @@ describe('Account Mongo Repository', () => {
 
       expect(account).toBeTruthy();
       expect(account.accessToken).toBe('any_token');
+    });
+  });
+
+  describe('loadByToken()', () => {
+    test('Should return an account on loadByToken success', async () => {
+      const sut = makeSut();
+      await accountColletion.insertOne({
+        name: 'any_name',
+        email: 'any_email@imail.com',
+        password: 'any_password',
+        accessToken: 'any_token',
+      });
+
+      const account = await sut.loadByToken('any_token');
+      expect(account).toBeTruthy();
+      expect(account.id).toBeTruthy();
+      expect(account.name).toBe('any_name');
+      expect(account.email).toBe('any_email@imail.com');
     });
   });
 });
