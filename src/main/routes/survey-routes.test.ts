@@ -4,9 +4,20 @@ import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helper';
 import { Collection } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import env from '../config/env';
+import { AddSurveyModel } from '../../domain/usecases/add-survey';
 
 let surveyColletion: Collection;
 let accountColletion: Collection;
+
+const makeFakeDataSurvey = (): AddSurveyModel => ({
+  question: 'any_question',
+  answers: [
+    {
+      answer: 'any_answer',
+      image: 'any_image',
+    },
+  ],
+});
 
 describe('Survey Routes', () => {
   beforeAll(async () => {
@@ -29,15 +40,7 @@ describe('Survey Routes', () => {
     test('Should return 403 on add survey without accessToken', async () => {
       await request(app)
         .post('/api/surveys')
-        .send({
-          question: 'any_question',
-          answers: [
-            {
-              answer: 'any_answer',
-              image: 'any_image',
-            },
-          ],
-        })
+        .send(makeFakeDataSurvey())
         .expect(403);
     });
 
@@ -64,15 +67,7 @@ describe('Survey Routes', () => {
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
-        .send({
-          question: 'any_question',
-          answers: [
-            {
-              answer: 'any_answer',
-              image: 'any_image',
-            },
-          ],
-        })
+        .send(makeFakeDataSurvey())
         .expect(204);
     });
   });

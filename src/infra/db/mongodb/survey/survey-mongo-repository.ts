@@ -1,4 +1,4 @@
-import { AddSurvey, AddSurveyModel, SurveyModel } from './survey-protocols';
+import { AddSurvey, AddSurveyModel } from './survey-protocols';
 import { MongoHelper } from '../helpers/mongo-helper';
 
 export class SurveyMongoRepository implements AddSurvey {

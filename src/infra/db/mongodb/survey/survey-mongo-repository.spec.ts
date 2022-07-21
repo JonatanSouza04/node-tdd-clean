@@ -20,6 +20,7 @@ const makeFakeDataSurvey = (): AddSurveyModel => ({
       answer: 'any_answer',
     },
   ],
+  date: new Date(),
 });
 
 describe('Survey Mongo Repository', () => {
