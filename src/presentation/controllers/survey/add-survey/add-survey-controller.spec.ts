@@ -9,7 +9,7 @@ import {
   badRequest,
   noContent,
   serverError,
-} from '../../helpers/http/http-helper';
+} from '../../../helpers/http/http-helper';
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -25,7 +25,7 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate(input: any): Error {
+    validate(input: any): Error | null {
       return null;
     }
   }
