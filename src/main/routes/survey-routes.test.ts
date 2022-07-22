@@ -4,7 +4,7 @@ import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helper';
 import { Collection } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import env from '../config/env';
-import { AddSurveyModel } from '../../domain/usecases/add-survey';
+import { AddSurveyModel } from '../../domain/models/survey';
 
 let surveyColletion: Collection;
 let accountColletion: Collection;
