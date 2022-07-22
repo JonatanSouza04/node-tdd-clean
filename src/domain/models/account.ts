@@ -4,3 +4,9 @@ export interface AccountModel {
   email: string;
   password: string;
 }
+
+export interface AddAccountModel {
+  name: string;
+  email: string;
+  password: string;
+}
