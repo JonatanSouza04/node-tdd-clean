@@ -54,7 +54,7 @@ describe('Survey Mongo Repository', () => {
   });
 
   describe('loadAll', () => {
-    test('Should loadAllsurveys on success', async () => {
+    test('Should loadAll surveys on success', async () => {
       await surveyColletion.insertMany([
         {
           question: 'any_question',
@@ -83,6 +83,13 @@ describe('Survey Mongo Repository', () => {
       expect(surveys.length).toBe(2);
       expect(surveys[0].question).toBe('any_question');
       expect(surveys[1].question).toBe('other_question');
+    });
+
+    test('Should loadAll empty list', async () => {
+      const sut = makeSut();
+      const surveys = await sut.loadAll();
+
+      expect(surveys.length).toBe(0);
     });
   });
 });
