@@ -37,17 +37,52 @@ describe('Survey Mongo Repository', () => {
     await surveyColletion.deleteMany({});
   });
 
-  test('Should add a survey on success', async () => {
-    const sut = makeSut();
-    const surveyDataFake = makeFakeDataSurvey();
-    const spySurveyAdd = jest.spyOn(sut, 'add');
-    await sut.add(surveyDataFake);
+  describe('add()', () => {
+    test('Should add a survey on success', async () => {
+      const sut = makeSut();
+      const surveyDataFake = makeFakeDataSurvey();
+      const spySurveyAdd = jest.spyOn(sut, 'add');
+      await sut.add(surveyDataFake);
 
-    const survey = await surveyColletion.findOne({
-      question: 'any_question',
+      const survey = await surveyColletion.findOne({
+        question: 'any_question',
+      });
+
+      expect(spySurveyAdd).toHaveBeenCalledWith(surveyDataFake);
+      expect(survey).toBeTruthy();
     });
+  });
 
-    expect(spySurveyAdd).toHaveBeenCalledWith(surveyDataFake);
-    expect(survey).toBeTruthy();
+  describe('loadAll', () => {
+    test('Should loadAllsurveys on success', async () => {
+      await surveyColletion.insertMany([
+        {
+          question: 'any_question',
+          answers: [
+            {
+              image: 'any_image',
+              answer: 'any_answer',
+            },
+          ],
+          date: new Date(),
+        },
+        {
+          question: 'other_question',
+          answers: [
+            {
+              image: 'other_image',
+              answer: 'other_answer',
+            },
+          ],
+          date: new Date(),
+        },
+      ]);
+      const sut = makeSut();
+      const surveys = await sut.loadAll();
+
+      expect(surveys.length).toBe(2);
+      expect(surveys[0].question).toBe('any_question');
+      expect(surveys[1].question).toBe('other_question');
+    });
   });
 });
