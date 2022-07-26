@@ -16,9 +16,11 @@ export class SurveyMongoRepository
     await surveyCollection.insertOne(surveyToBeInserted);
   }
 
-  async loadAll(): Promise<any[]> {
+  async loadAll(): Promise<SurveyModel[]> {
     const surveyCollection = await MongoHelper.getCollection('surveys');
-    const surveys: any[] = await surveyCollection.find().toArray();
+    const surveys: SurveyModel[] = (await surveyCollection
+      .find()
+      .toArray()) as unknown as SurveyModel[];
     return surveys;
   }
 }
