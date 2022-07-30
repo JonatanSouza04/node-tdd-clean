@@ -1,4 +1,4 @@
-const config = {
+module.exports = {
   clearMocks: true,
   collectCoverage: true,
   coverageProvider: 'babel',
@@ -18,6 +18,8 @@ const config = {
     '.+\\.ts$': 'ts-jest',
   },
   preset: '@shelf/jest-mongodb',
+  moduleNameMapper: {
+    '@/(.*)': '<rootDir>/src/$1'
+  }
 };
 
-module.exports = config;
