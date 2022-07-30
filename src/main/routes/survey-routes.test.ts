@@ -19,6 +19,29 @@ const makeFakeDataSurvey = (): AddSurveyModel => ({
   ],
 });
 
+const makeAccessToken = async (): Promise<string> => {
+  const res = await accountColletion.insertOne({
+    name: 'any_name',
+    email: 'any_email@mail.com',
+    password: '123',
+    role: 'admin',
+  });
+
+  const id = res.insertedId.toString();
+  const accessToken = sign({ id }, env.jwtSecret);
+
+  await accountColletion.updateOne(
+    { _id: MongoHelper.objectID(id) },
+    {
+      $set: {
+        accessToken,
+      },
+    },
+  );
+
+  return accessToken;
+};
+
 describe('Survey Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoURL);
@@ -45,25 +68,7 @@ describe('Survey Routes', () => {
     });
 
     test('Should return 204 on add survey with valid accessToken', async () => {
-      const res = await accountColletion.insertOne({
-        name: 'any_name',
-        email: 'any_email@mail.com',
-        password: '123',
-        role: 'admin',
-      });
-
-      const id = res.insertedId.toString();
-      const accessToken = sign({ id }, env.jwtSecret);
-
-      await accountColletion.updateOne(
-        { _id: MongoHelper.objectID(id) },
-        {
-          $set: {
-            accessToken,
-          },
-        },
-      );
-
+      const accessToken = await makeAccessToken();
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
@@ -78,25 +83,7 @@ describe('Survey Routes', () => {
     });
 
     test('Should return 200 on load surveys with valid accessToken', async () => {
-      const res = await accountColletion.insertOne({
-        name: 'any_name',
-        email: 'any_email@mail.com',
-        password: '123',
-        role: 'admin',
-      });
-
-      const id = res.insertedId.toString();
-      const accessToken = sign({ id }, env.jwtSecret);
-
-      await accountColletion.updateOne(
-        { _id: MongoHelper.objectID(id) },
-        {
-          $set: {
-            accessToken,
-          },
-        },
-      );
-
+      const accessToken = await makeAccessToken();
       await surveyColletion.insertMany([
         {
           question: 'any_question',
