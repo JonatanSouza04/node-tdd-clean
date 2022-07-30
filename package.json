@@ -16,7 +16,7 @@
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests src/",
     "test:ci": "npm test -- --coverage",
-    "lint": "eslint --fix --ext .ts"
+    "lint": "eslint 'src/**' --fix"
   },
   "author": "Jonatan",
   "license": "ISC",
