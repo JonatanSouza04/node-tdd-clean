@@ -2,9 +2,9 @@ import { InvalidParamError } from '@/presentation/erros';
 import { CompareFieldValidation } from './compare-field-validation';
 import { Validation } from '@/presentation/protocols/validation';
 
-interface SutTypes {
+type SutTypes = {
   sut: Validation;
-}
+};
 
 const makeSut = (): SutTypes => {
   const sut = new CompareFieldValidation('password', 'confirmPassword');

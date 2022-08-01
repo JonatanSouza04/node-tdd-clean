@@ -3,10 +3,10 @@ import { SurveyModel } from '@/domain/models/survey';
 import { LoadSurveysRepository } from '../../protocols/db/survey/load-surveys-repository';
 import mockDate from 'mockdate';
 
-interface SutTypes {
+type SutTypes = {
   sut: DbLoadSurveys;
   loadSurveysRepository: LoadSurveysRepository;
-}
+};
 
 const makeFakeSurveys = (): SurveyModel[] => {
   return [

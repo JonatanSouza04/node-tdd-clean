@@ -6,11 +6,11 @@ import {
   Decrypter,
 } from './db-load-account-by-token-protocols';
 
-interface SutTypes {
+type SutTypes = {
   sut: DbLoadAccountByToken;
   decrypterStub: Decrypter;
   loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository;
-}
+};
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'valid_id',

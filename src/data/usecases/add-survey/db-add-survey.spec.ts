@@ -6,10 +6,10 @@ import {
 } from './db-add-survey-protocols';
 import Mockdate from 'mockdate';
 
-interface SutTypes {
+type SutTypes = {
   sut: AddSurvey;
   addSurveyRepositoryStub: AddSurveyRepository;
-}
+};
 
 const makeFakeSurveyData = (): AddSurveyModel => ({
   question: 'any_question',

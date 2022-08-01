@@ -1,12 +1,12 @@
-export interface AccountModel {
+export type AccountModel = {
   id: string;
   name: string;
   email: string;
   password: string;
-}
+};
 
-export interface AddAccountModel {
+export type AddAccountModel = {
   name: string;
   email: string;
   password: string;
-}
+};

@@ -3,10 +3,10 @@ import { LoadSurveys, SurveyModel } from './load-survey-controller-protocols';
 import { noContent, ok, serverError } from '../../../helpers/http/http-helper';
 import mockDate from 'mockdate';
 
-interface SutTypes {
+type SutTypes = {
   sut: LoadSurveysController;
   loadSurveysStub: LoadSurveys;
-}
+};
 
 const makeFakeSurveys = (): SurveyModel[] => {
   return [

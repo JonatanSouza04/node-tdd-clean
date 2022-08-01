@@ -3,9 +3,9 @@ import { Validation } from '@/presentation/protocols/validation';
 import { RequiredFieldValidation } from './required-field-validation';
 import { MissingParamError } from '@/presentation/erros';
 
-interface SutTypes {
+type SutTypes = {
   sut: Validation;
-}
+};
 
 const makeValidations = (): Validation[] => {
   const validations: Validation[] = [];

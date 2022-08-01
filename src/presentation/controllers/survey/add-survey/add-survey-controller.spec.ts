@@ -45,11 +45,11 @@ const makeAddSurvey = (): AddSurvey => {
   return new AddSurveyStub();
 };
 
-interface SutTypes {
+type SutTypes = {
   sut: AddSurveyController;
   validateStub: Validation;
   addSurveyStub: AddSurvey;
-}
+};
 
 const makeSut = (): SutTypes => {
   const validateStub = makeValidation();
