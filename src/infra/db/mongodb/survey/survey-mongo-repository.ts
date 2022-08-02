@@ -4,7 +4,7 @@ import {
   AddSurveyRepository,
   LoadSurveysRepository,
   LoadSurveyByIdRepository,
-} from './survey-protocols';
+} from './survey-mongo-repository-protocols';
 
 import { MongoHelper } from '../helpers/mongo-helper';
 
