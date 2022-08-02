@@ -3,12 +3,16 @@ import {
   AddSurveyModel,
   AddSurveyRepository,
   LoadSurveysRepository,
+  LoadSurveyByIdRepository,
 } from './survey-protocols';
 
 import { MongoHelper } from '../helpers/mongo-helper';
 
 export class SurveyMongoRepository
-  implements AddSurveyRepository, LoadSurveysRepository
+  implements
+    AddSurveyRepository,
+    LoadSurveysRepository,
+    LoadSurveyByIdRepository
 {
   async add(surverData: AddSurveyModel): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection('surveys');
@@ -22,5 +26,13 @@ export class SurveyMongoRepository
       .find()
       .toArray()) as unknown as SurveyModel[];
     return surveys;
+  }
+
+  async loadById(id: string): Promise<SurveyModel> {
+    const surveyCollection = await MongoHelper.getCollection('surveys');
+    const survey: SurveyModel = (await surveyCollection.findOne({
+      _id: MongoHelper.objectID(id),
+    })) as unknown as SurveyModel;
+    return survey;
   }
 }
