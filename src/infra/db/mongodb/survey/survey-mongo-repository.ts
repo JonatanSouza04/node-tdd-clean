@@ -25,7 +25,7 @@ export class SurveyMongoRepository
     const surveys: SurveyModel[] = (await surveyCollection
       .find()
       .toArray()) as unknown as SurveyModel[];
-    return surveys;
+    return MongoHelper.mapCollection(surveys);
   }
 
   async loadById(id: string): Promise<SurveyModel> {
@@ -33,6 +33,6 @@ export class SurveyMongoRepository
     const survey: SurveyModel = (await surveyCollection.findOne({
       _id: MongoHelper.objectID(id),
     })) as unknown as SurveyModel;
-    return survey;
+    return survey && MongoHelper.map(survey);
   }
 }

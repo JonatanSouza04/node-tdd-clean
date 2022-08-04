@@ -21,8 +21,13 @@ export const MongoHelper = {
     return collection;
   },
 
-  map(collection: any, _id: string): any {
-    return Object.assign({}, collection, { id: _id });
+  map(data: any, _insertedId?: string): any {
+    const id = data._id ? data._id.toString() : _insertedId;
+    return Object.assign({}, data, { id });
+  },
+
+  mapCollection(collection: any[]): any {
+    return collection.map((data: any) => MongoHelper.map(data));
   },
 
   objectID(id: string): ObjectId {
