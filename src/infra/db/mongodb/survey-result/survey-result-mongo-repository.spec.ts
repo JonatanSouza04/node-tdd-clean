@@ -20,6 +20,10 @@ const makeSurvey = async (): Promise<SurveyModel> => {
         image: 'any_image',
         answer: 'any_answer',
       },
+      {
+        image: 'other_image',
+        answer: 'other_answer',
+      },
     ],
     date: new Date(),
   });
@@ -83,6 +87,30 @@ describe('SurveyResult Mongo Repository', () => {
       expect(surveyResult).toBeTruthy();
       expect(surveyResult.id).toBeTruthy();
       expect(surveyResult.answer).toBe(survey.answers[0].answer);
+    });
+
+    test('Should update a survey result if its not new', async () => {
+      const sut = makeSut();
+
+      const survey = await makeSurvey();
+      const account = await makeAccount();
+      const res = await surveyResultColletion.insertOne({
+        accountId: account.id,
+        surveyId: survey.id,
+        answer: survey.answers[0].answer,
+        date: new Date(),
+      });
+
+      const surveyResult = await sut.save({
+        accountId: account.id,
+        surveyId: survey.id,
+        answer: survey.answers[1].answer,
+        date: new Date(),
+      });
+
+      expect(surveyResult).toBeTruthy();
+      expect(surveyResult.id).toEqual(res.insertedId.toString());
+      expect(surveyResult.answer).toBe(survey.answers[1].answer);
     });
   });
 });
