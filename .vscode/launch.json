@@ -1,6 +1,8 @@
 {
     "version": "0.2.0",
-    "configurations": [{
+    "configurations": [
+
+    {
             "type": "node",
             "request": "attach",
             "name": "Docker: Attach to Node",
@@ -8,5 +10,12 @@
             "port": 9222,
             "restart": true,
             "timeout": 10000
+    }, {
+        "type": "node",
+        "request": "attach",
+        "name": "Attach to Node",
+        "port": 9222,
+        "restart": true,
+        "timeout": 10000  
     }]
 }
