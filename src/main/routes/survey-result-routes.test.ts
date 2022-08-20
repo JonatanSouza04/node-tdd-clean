@@ -4,27 +4,15 @@ import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper';
 import { Collection } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import env from '../config/env';
-import { AddSurveyModel } from '@/domain/models/survey';
 
 let surveyColletion: Collection;
 let accountColletion: Collection;
-
-const makeFakeDataSurvey = (): AddSurveyModel => ({
-  question: 'any_question',
-  answers: [
-    {
-      answer: 'any_answer',
-      image: 'any_image',
-    },
-  ],
-});
 
 const makeAccessToken = async (): Promise<string> => {
   const res = await accountColletion.insertOne({
     name: 'any_name',
     email: 'any_email@mail.com',
     password: '123',
-    role: 'admin',
   });
 
   const id = res.insertedId.toString();
@@ -40,6 +28,25 @@ const makeAccessToken = async (): Promise<string> => {
   );
 
   return accessToken;
+};
+
+const makeInsertSurvey = async (): Promise<string> => {
+  const res = await surveyColletion.insertOne({
+    question: 'any_question',
+    answers: [
+      {
+        answer: 'any_answer',
+        image: 'any_image',
+      },
+      {
+        answer: 'other_answer',
+      },
+    ],
+    date: new Date(),
+  });
+
+  const id = res.insertedId.toString();
+  return id;
 };
 
 describe('Survey Routes', () => {
@@ -67,6 +74,18 @@ describe('Survey Routes', () => {
           answer: 'any_answer',
         })
         .expect(403);
+    });
+
+    test('Should return 200 on save survey result with accessToken', async () => {
+      const accessToken = await makeAccessToken();
+      const surveyId = await makeInsertSurvey();
+      await request(app)
+        .put(`/api/surveys/${surveyId}/results`)
+        .set('x-access-token', accessToken)
+        .send({
+          answer: 'any_answer',
+        })
+        .expect(200);
     });
   });
 });
