@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
@@ -66,5 +67,5 @@
   },
   "_moduleAliases": {
     "@": "dist"
-   }
+  }
 }
