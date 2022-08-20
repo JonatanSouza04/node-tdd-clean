@@ -1,5 +1,5 @@
-import { AddSurveyModel } from '../../models/survey';
+import { AddSurveyParamsModel } from '../../models/survey';
 
 export interface AddSurvey {
-  add: (data: AddSurveyModel) => Promise<void>;
+  add: (data: AddSurveyParamsModel) => Promise<void>;
 }

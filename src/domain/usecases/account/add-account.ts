@@ -1,5 +1,5 @@
-import { AccountModel, AddAccountModel } from '../../models/account';
+import { AccountModel, AddAccounParamstModel } from '../../models/account';
 
 export interface AddAccount {
-  add: (account: AddAccountModel) => Promise<AccountModel>;
+  add: (account: AddAccounParamstModel) => Promise<AccountModel>;
 }

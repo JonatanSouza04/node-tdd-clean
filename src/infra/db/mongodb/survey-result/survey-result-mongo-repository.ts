@@ -1,12 +1,12 @@
 import { SaveSurveyResultRepository } from './survey-result-mongo-repository-protocols';
 import {
-  SaveSurveyResultModel,
+  SaveSurveyResultParamsModel,
   SurveyResultModel,
 } from '@/domain/models/survey-result';
 import { MongoHelper } from '../helpers/mongo-helper';
 
 export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
-  async save(data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+  async save(data: SaveSurveyResultParamsModel): Promise<SurveyResultModel> {
     const surveyResultColletion = await MongoHelper.getCollection(
       'surveyResults',
     );

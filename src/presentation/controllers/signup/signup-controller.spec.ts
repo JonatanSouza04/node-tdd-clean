@@ -3,11 +3,11 @@ import { MissingParamError, ServerError, ForbiddenError } from '../../erros';
 import {
   AccountModel,
   AddAccount,
-  AddAccountModel,
+  AddAccounParamstModel,
   HttpRequest,
   Validation,
   Authentication,
-  AuthenticationModel,
+  AuthenticationParamsModel,
 } from './signup-controller-protocols';
 
 import {
@@ -19,7 +19,7 @@ import {
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add(account: AddAccountModel): Promise<AccountModel> {
+    async add(account: AddAccounParamstModel): Promise<AccountModel> {
       return await new Promise((resolve) => resolve(makeFakeAccount()));
     }
   }
@@ -54,7 +54,7 @@ const makeFakeAccount = (): AccountModel => ({
 
 const makeAuthentication = (): any => {
   class AuthenticationStub implements Authentication {
-    async auth(authentication: AuthenticationModel): Promise<string> {
+    async auth(authentication: AuthenticationParamsModel): Promise<string> {
       return await new Promise((resolve) => resolve('any_token'));
     }
   }

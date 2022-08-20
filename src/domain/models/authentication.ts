@@ -1,4 +1,4 @@
-export type AuthenticationModel = {
+export type AuthenticationParamsModel = {
   email: string;
   password: string;
 };

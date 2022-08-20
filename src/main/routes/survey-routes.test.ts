@@ -4,12 +4,12 @@ import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper';
 import { Collection } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import env from '../config/env';
-import { AddSurveyModel } from '@/domain/models/survey';
+import { AddSurveyParamsModel } from '@/domain/models/survey';
 
 let surveyColletion: Collection;
 let accountColletion: Collection;
 
-const makeFakeDataSurvey = (): AddSurveyModel => ({
+const makeFakeDataSurvey = (): AddSurveyParamsModel => ({
   question: 'any_question',
   answers: [
     {

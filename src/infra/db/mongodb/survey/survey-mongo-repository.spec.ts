@@ -1,7 +1,7 @@
 import { Collection } from 'mongodb';
 import { MongoHelper } from '../helpers/mongo-helper';
 import { SurveyMongoRepository } from './survey-mongo-repository';
-import { AddSurveyModel } from './survey-mongo-repository-protocols';
+import { AddSurveyParamsModel } from './survey-mongo-repository-protocols';
 
 let surveyColletion: Collection;
 
@@ -9,7 +9,7 @@ const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository();
 };
 
-const makeFakeDataSurvey = (): AddSurveyModel => ({
+const makeFakeDataSurvey = (): AddSurveyParamsModel => ({
   question: 'any_question',
   answers: [
     {

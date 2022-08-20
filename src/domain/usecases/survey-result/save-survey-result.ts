@@ -1,8 +1,8 @@
 import {
-  SaveSurveyResultModel,
+  SaveSurveyResultParamsModel,
   SurveyResultModel,
 } from '../../models/survey-result';
 
 export interface SaveSurveyResult {
-  save: (data: SaveSurveyResultModel) => Promise<SurveyResultModel>;
+  save: (data: SaveSurveyResultParamsModel) => Promise<SurveyResultModel>;
 }

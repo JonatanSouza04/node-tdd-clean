@@ -10,4 +10,4 @@ export type SurveyAnswersModel = {
   answer: string;
 };
 
-export type AddSurveyModel = Omit<SurveyModel, 'id'>;
+export type AddSurveyParamsModel = Omit<SurveyModel, 'id'>;

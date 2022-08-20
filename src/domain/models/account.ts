@@ -5,4 +5,4 @@ export type AccountModel = {
   password: string;
 };
 
-export type AddAccountModel = Omit<AccountModel, 'id'>;
+export type AddAccounParamstModel = Omit<AccountModel, 'id'>;

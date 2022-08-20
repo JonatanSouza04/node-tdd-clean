@@ -1,5 +1,5 @@
-import { AuthenticationModel } from '../../models/authentication';
+import { AuthenticationParamsModel } from '../../models/authentication';
 
 export interface Authentication {
-  auth: (authentication: AuthenticationModel) => Promise<string>;
+  auth: (authentication: AuthenticationParamsModel) => Promise<string>;
 }
