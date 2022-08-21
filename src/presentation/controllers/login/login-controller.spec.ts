@@ -13,6 +13,7 @@ import {
   Validation,
   AuthenticationParamsModel,
 } from './login-controller-protocols';
+import { mockThrowError } from '@/domain/test';
 
 const makeAuthentication = (): any => {
   class AuthenticationStub implements Authentication {
@@ -84,9 +85,7 @@ describe('Login Controller', () => {
     const { sut, authenticationStub } = makeSut();
     jest
       .spyOn(authenticationStub, 'auth')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+      .mockImplementationOnce(mockThrowError);
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
   });

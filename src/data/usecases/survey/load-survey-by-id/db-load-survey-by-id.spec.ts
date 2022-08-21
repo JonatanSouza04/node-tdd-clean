@@ -1,39 +1,16 @@
-import {
-  SurveyModel,
-  LoadSurveyByIdRepository,
-} from './db-load-survey-by-id-protocols';
+import { LoadSurveyByIdRepository } from './db-load-survey-by-id-protocols';
 import { DbLoadSurveyById } from './db-load-survey-by-id';
 import mockDate from 'mockdate';
+import { mockThrowError, mockSurveyModel } from '@/domain/test';
+import { mockLoadSurveyByIdRepository } from '@/data/test';
 
 type SutTypes = {
   sut: DbLoadSurveyById;
   loadSurveyByIdRepository: LoadSurveyByIdRepository;
 };
 
-const makeFakeSurvey = (): SurveyModel => ({
-  id: 'any_id',
-  question: 'any_question',
-  answers: [
-    {
-      image: 'any_image',
-      answer: 'any_answer',
-    },
-  ],
-  date: new Date(),
-});
-
-const makeLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
-  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById(id: string): Promise<SurveyModel> {
-      return await new Promise((resolve) => resolve(makeFakeSurvey()));
-    }
-  }
-
-  return new LoadSurveyByIdRepositoryStub();
-};
-
 const makeSut = (): SutTypes => {
-  const loadSurveyByIdRepository = makeLoadSurveyByIdRepository();
+  const loadSurveyByIdRepository = mockLoadSurveyByIdRepository();
   const sut = new DbLoadSurveyById(loadSurveyByIdRepository);
 
   return {
@@ -60,7 +37,7 @@ describe('DbLoadSurveyById', () => {
   test('Should returns Survey on success ', async () => {
     const { sut } = makeSut();
     const suryey = await sut.loadById('any_id');
-    expect(suryey).toEqual(makeFakeSurvey());
+    expect(suryey).toEqual(mockSurveyModel());
   });
 
   test('Should throw if LoadSurveyByIdRepository throws', async () => {
@@ -68,10 +45,7 @@ describe('DbLoadSurveyById', () => {
 
     jest
       .spyOn(loadSurveyByIdRepository, 'loadById')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
-
+      .mockImplementationOnce(mockThrowError);
     const promise = sut.loadById('any_id');
     await expect(promise).rejects.toThrow();
   });

@@ -1,6 +1,6 @@
 import {
   AddAccount,
-  AddAccounParamstModel,
+  AddAccountParamsModel,
   AccountModel,
   Hasher,
   AddAccountRepository,
@@ -14,7 +14,7 @@ export class DbAddAccount implements AddAccount {
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
   ) {}
 
-  async add(accountData: AddAccounParamstModel): Promise<AccountModel | null> {
+  async add(accountData: AddAccountParamsModel): Promise<AccountModel | null> {
     const account = await this.loadAccountByEmailRepository.loadByEmail(
       accountData.email,
     );

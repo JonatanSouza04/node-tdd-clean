@@ -4,8 +4,10 @@ import {
   HttpResponse,
 } from '@/presentation/protocols';
 import { LogControllerDecorator } from './log-controller-decorator';
-import { serverError } from '@/presentation/helpers/http/http-helper';
+import { serverError, ok } from '@/presentation/helpers/http/http-helper';
 import { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository';
+import { mockLogErrorRepository } from '@/data/test';
+import { mockAccountModel } from '@/domain/test';
 
 type SutTypes = {
   sut: LogControllerDecorator;
@@ -16,32 +18,16 @@ type SutTypes = {
 const makeController = (): Controller => {
   class ControllerStub implements Controller {
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-      const httpResponse: HttpResponse = {
-        statusCode: 200,
-        body: {
-          name: 'Jonatan',
-        },
-      };
-      return await new Promise((resolve) => resolve(httpResponse));
+      return await new Promise((resolve) => resolve(ok(mockAccountModel())));
     }
   }
 
   return new ControllerStub();
 };
 
-const makeLogErrorRepository = (): LogErrorRepository => {
-  class LogErrorRepository implements LogErrorRepository {
-    async logError(stack: string): Promise<void> {
-      return await new Promise((resolve) => resolve());
-    }
-  }
-
-  return new LogErrorRepository();
-};
-
 const makeSut = (): SutTypes => {
   const controllerStub = makeController();
-  const logErrorRepositoryStub = makeLogErrorRepository();
+  const logErrorRepositoryStub = mockLogErrorRepository();
   const sut = new LogControllerDecorator(
     controllerStub,
     logErrorRepositoryStub,
@@ -83,12 +69,7 @@ describe('LogController Decorator', () => {
       },
     };
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual({
-      statusCode: 200,
-      body: {
-        name: 'Jonatan',
-      },
-    });
+    expect(httpResponse).toEqual(ok(mockAccountModel()));
   });
 
   test('Should call LogErrorRepository with correct error if controller returns a server error', async () => {
