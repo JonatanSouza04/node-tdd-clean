@@ -9,6 +9,7 @@ module.exports = {
     '!**/protocols/**',
     '!**/test/**',
     '<rootDir>/src/main/decorators/*.ts',
+    '!**/mocks/**'
   ],
   coverageDirectory: 'coverage',
   // coverageProvider: 'v8',
