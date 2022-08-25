@@ -6,7 +6,7 @@ import {
 export const mockAuthentication = (): any => {
   class AuthenticationStub implements Authentication {
     async auth(authentication: AuthenticationParamsModel): Promise<string> {
-      return await new Promise((resolve) => resolve('any_token'));
+      return await Promise.resolve('any_token');
     }
   }
 

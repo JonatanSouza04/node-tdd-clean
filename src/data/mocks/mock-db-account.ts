@@ -11,7 +11,7 @@ import { UpdateAccessTokenRepository } from '@/data/usecases/authentication/db-a
 export const mockAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
     async add(accountData: AddAccountParamsModel): Promise<AccountModel> {
-      return await new Promise((resolve) => resolve(mockAccountModel()));
+      return await Promise.resolve(mockAccountModel());
     }
   }
   return new AddAccountRepositoryStub();
@@ -26,7 +26,7 @@ export const mockLoadAccountByTokenRepository =
         token: string,
         role?: string,
       ): Promise<AccountModel | null> {
-        return await new Promise((resolve) => resolve(mockAccountModel()));
+        return await Promise.resolve(mockAccountModel());
       }
     }
 
@@ -39,7 +39,7 @@ export const mockLoadAccountByEmailRepository =
       implements LoadAccountByEmailRepository
     {
       async loadByEmail(email: string): Promise<AccountModel> {
-        return await new Promise((resolve) => resolve(mockAccountModel()));
+        return await Promise.resolve(mockAccountModel());
       }
     }
 
@@ -52,7 +52,7 @@ export const mockUpdateAccessTokenRepository =
       implements UpdateAccessTokenRepository
     {
       async updateAccessToken(id: string, token: string): Promise<void> {
-        return await new Promise((resolve) => resolve());
+        return await Promise.resolve();
       }
     }
 

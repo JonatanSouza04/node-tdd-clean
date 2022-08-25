@@ -6,7 +6,7 @@ import {
 export const mockAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
     async add(data: AddSurveyParamsModel): Promise<void> {
-      return await new Promise((resolve) => resolve());
+      return await Promise.resolve();
     }
   }
 

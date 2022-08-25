@@ -31,7 +31,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
     implements LoadAccountByEmailRepository
   {
     async loadByEmail(email: string): Promise<AccountModel> {
-      return await new Promise((resolve) => resolve(mockAccountModel()));
+      return await Promise.resolve(mockAccountModel());
     }
   }
 

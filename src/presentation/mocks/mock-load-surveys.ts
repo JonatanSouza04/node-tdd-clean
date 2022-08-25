@@ -7,7 +7,7 @@ import {
 export const mockLoadSurveys = (): LoadSurveys => {
   class LoadSurveysStub implements LoadSurveys {
     async load(): Promise<SurveyModel[]> {
-      return await new Promise((resolve) => resolve(mockSurveysModels()));
+      return await Promise.resolve(mockSurveysModels());
     }
   }
 
