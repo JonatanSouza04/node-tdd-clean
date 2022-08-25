@@ -10,9 +10,9 @@ import {
   mockAccountModel,
   mockAddAccountParams,
   mockThrowError,
-} from '@/domain/test';
+} from '@/domain/mocks';
 
-import { mockAddAccountRepository, mockHasher } from '@/data/test';
+import { mockAddAccountRepository, mockHasher } from '@/data/mocks';
 
 type SutTypes = {
   sut: DbAddAccount;

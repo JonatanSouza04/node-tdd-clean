@@ -1,21 +1,14 @@
 import { ValidationComposite } from './validation-composite';
 import { Validation } from '@/presentation/protocols/validation';
-import { RequiredFieldValidation } from './required-field-validation';
 import { MissingParamError } from '@/presentation/erros';
+import { mockValidations } from '../mocks';
 
 type SutTypes = {
   sut: Validation;
 };
 
-const makeValidations = (): Validation[] => {
-  const validations: Validation[] = [];
-
-  validations.push(new RequiredFieldValidation('field'));
-  return validations;
-};
-
 const makeSut = (): SutTypes => {
-  const sut = new ValidationComposite(makeValidations());
+  const sut = new ValidationComposite(mockValidations());
 
   return {
     sut,

@@ -5,8 +5,8 @@ import {
   AddSurveyRepository,
 } from './db-add-survey-protocols';
 import Mockdate from 'mockdate';
-import { mockThrowError } from '@/domain/test';
-import { mockAddSurveyRepository } from '@/data/test';
+import { mockThrowError } from '@/domain/mocks';
+import { mockAddSurveyRepository } from '@/data/mocks';
 
 type SutTypes = {
   sut: AddSurvey;

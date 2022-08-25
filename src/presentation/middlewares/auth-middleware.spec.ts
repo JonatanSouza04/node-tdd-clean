@@ -6,7 +6,7 @@ import {
   HttpRequest,
   AccountModel,
 } from './auth-middlewares-protocols';
-import { mockThrowError, mockAccountModel } from '@/domain/test';
+import { mockThrowError, mockAccountModel } from '@/domain/mocks';
 
 type SutTypes = {
   sut: AuthMiddleware;

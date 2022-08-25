@@ -2,12 +2,12 @@ import {
   mockAccountModel,
   mockThrowError,
   mockAuthentication,
-} from '@/domain/test';
+} from '@/domain/mocks';
 import {
   mockEncrypter,
   mockHashComparer,
   mockUpdateAccessTokenRepository,
-} from '@/data/test';
+} from '@/data/mocks';
 import { DbAuthentication } from './db-authentication';
 
 import {

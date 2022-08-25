@@ -1,4 +1,4 @@
-import { mockSurveyModel, mockSurveysModels } from '@/domain/test';
+import { mockSurveyModel, mockSurveysModels } from '@/domain/mocks';
 import {
   AddSurveyParamsModel,
   AddSurveyRepository,

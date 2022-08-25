@@ -1,5 +1,5 @@
-import { mockAccountModel, mockThrowError } from '@/domain/test';
-import { mockDecrypter, mockLoadAccountByTokenRepository } from '@/data/test';
+import { mockAccountModel, mockThrowError } from '@/domain/mocks';
+import { mockDecrypter, mockLoadAccountByTokenRepository } from '@/data/mocks';
 import { DbLoadAccountByToken } from './db-load-account-by-token';
 
 import {

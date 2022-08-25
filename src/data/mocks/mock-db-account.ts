@@ -4,7 +4,7 @@ import {
   AddAccountRepository,
   LoadAccountByEmailRepository,
 } from '@/data/usecases/account/add-account/db-add-account-protocols';
-import { mockAccountModel } from '@/domain/test';
+import { mockAccountModel } from '@/domain/mocks';
 import { LoadAccountByTokenRepository } from '@/data/usecases/account/load-account-by-token/db-load-account-by-token-protocols';
 import { UpdateAccessTokenRepository } from '@/data/usecases/authentication/db-authentication-protocols';
 

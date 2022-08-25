@@ -1,3 +1,7 @@
+import {
+  mockAccountModelWithTokenParams,
+  mockSurveyParamsModel,
+} from '@/domain/mocks';
 import { Collection } from 'mongodb';
 import { AccountModel } from '../account/account-protocols';
 import { MongoHelper } from '../helpers/mongo-helper';
@@ -13,20 +17,7 @@ const makeSut = (): SurveyResultMongoRepository => {
 };
 
 const makeSurvey = async (): Promise<SurveyModel> => {
-  const inserted = await surveyColletion.insertOne({
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer',
-      },
-      {
-        image: 'other_image',
-        answer: 'other_answer',
-      },
-    ],
-    date: new Date(),
-  });
+  const inserted = await surveyColletion.insertOne(mockSurveyParamsModel());
 
   const res = await surveyColletion.findOne({
     _id: MongoHelper.objectID(inserted.insertedId.toString()),
@@ -36,12 +27,9 @@ const makeSurvey = async (): Promise<SurveyModel> => {
 };
 
 const makeAccount = async (): Promise<AccountModel> => {
-  const inserted = await accountColletion.insertOne({
-    name: 'any_name',
-    email: 'any_email@imail.com',
-    password: 'any_password',
-    accessToken: 'any_token',
-  });
+  const inserted = await accountColletion.insertOne(
+    mockAccountModelWithTokenParams(),
+  );
 
   const res = await accountColletion.findOne({
     _id: MongoHelper.objectID(inserted.insertedId.toString()),

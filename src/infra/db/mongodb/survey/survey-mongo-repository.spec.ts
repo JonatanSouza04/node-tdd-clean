@@ -1,27 +1,13 @@
+import { mockAddSurveyModels, mockSurveyParamsModel } from '@/domain/mocks';
 import { Collection } from 'mongodb';
 import { MongoHelper } from '../helpers/mongo-helper';
 import { SurveyMongoRepository } from './survey-mongo-repository';
-import { AddSurveyParamsModel } from './survey-mongo-repository-protocols';
 
 let surveyColletion: Collection;
 
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository();
 };
-
-const makeFakeDataSurvey = (): AddSurveyParamsModel => ({
-  question: 'any_question',
-  answers: [
-    {
-      answer: 'any_answer',
-      image: 'any_image',
-    },
-    {
-      answer: 'any_answer',
-    },
-  ],
-  date: new Date(),
-});
 
 describe('Survey Mongo Repository', () => {
   beforeAll(async () => {
@@ -40,7 +26,7 @@ describe('Survey Mongo Repository', () => {
   describe('add()', () => {
     test('Should add a survey on success', async () => {
       const sut = makeSut();
-      const surveyDataFake = makeFakeDataSurvey();
+      const surveyDataFake = mockSurveyParamsModel();
       const spySurveyAdd = jest.spyOn(sut, 'add');
       await sut.add(surveyDataFake);
 
@@ -55,28 +41,7 @@ describe('Survey Mongo Repository', () => {
 
   describe('loadAll', () => {
     test('Should loadAll surveys on success', async () => {
-      await surveyColletion.insertMany([
-        {
-          question: 'any_question',
-          answers: [
-            {
-              image: 'any_image',
-              answer: 'any_answer',
-            },
-          ],
-          date: new Date(),
-        },
-        {
-          question: 'other_question',
-          answers: [
-            {
-              image: 'other_image',
-              answer: 'other_answer',
-            },
-          ],
-          date: new Date(),
-        },
-      ]);
+      await surveyColletion.insertMany(mockAddSurveyModels());
       const sut = makeSut();
       const surveys = await sut.loadAll();
 
@@ -96,16 +61,7 @@ describe('Survey Mongo Repository', () => {
 
   describe('loadById', () => {
     test('Should loadById survey on success', async () => {
-      const res = await surveyColletion.insertOne({
-        question: 'any_question',
-        answers: [
-          {
-            image: 'any_image',
-            answer: 'any_answer',
-          },
-        ],
-        date: new Date(),
-      });
+      const res = await surveyColletion.insertOne(mockAddSurveyModels()[0]);
       const id = res.insertedId.toString();
       const sut = makeSut();
       const survey = await sut.loadById(id);

@@ -6,8 +6,8 @@ import {
 import { LogControllerDecorator } from './log-controller-decorator';
 import { serverError, ok } from '@/presentation/helpers/http/http-helper';
 import { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository';
-import { mockLogErrorRepository } from '@/data/test';
-import { mockAccountModel } from '@/domain/test';
+import { mockLogErrorRepository } from '@/data/mocks';
+import { mockAccountModel } from '@/domain/mocks';
 
 type SutTypes = {
   sut: LogControllerDecorator;

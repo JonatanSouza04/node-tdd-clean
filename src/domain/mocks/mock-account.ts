@@ -11,6 +11,15 @@ export const mockAddAccountParams = (): AddAccountParamsModel => ({
 export const mockAccountModel = (): AccountModel =>
   Object.assign({}, mockAddAccountParams(), { id: 'any_id' });
 
+export const mockAccountModelWithTokenParams = (): AddAccountParamsModel =>
+  Object.assign({}, mockAddAccountParams(), { accessToken: 'any_token' });
+
+export const mockAccountModelWithRoleParams = (): AddAccountParamsModel =>
+  Object.assign({}, mockAddAccountParams(), {
+    accessToken: 'any_token',
+    role: 'admin',
+  });
+
 export const mockRequestAddAccount = (): HttpRequest => ({
   body: {
     name: 'any_name',
