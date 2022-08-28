@@ -1,2 +1,3 @@
-export * from './account-schemas';
-export * from './login-params-schemas';
+export * from './account-schema';
+export * from './login-params-schema';
+export * from './error-schema';
