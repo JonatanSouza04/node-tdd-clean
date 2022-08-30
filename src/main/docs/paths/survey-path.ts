@@ -29,4 +29,41 @@ export const surveysPath = {
       },
     },
   },
+
+  post: {
+    security: [
+      {
+        apiKeyAuth: [],
+      },
+    ],
+    tags: ['Enquete'],
+    summary: 'API para criar uma enquete',
+    requestBody: {
+      description: '',
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/schemas/addSurveyParams',
+          },
+        },
+      },
+    },
+    responses: {
+      204: {
+        description: 'Sucesso',
+      },
+      403: {
+        $ref: '#/components/forbidden',
+      },
+      400: {
+        $ref: '#/components/badRequest',
+      },
+      404: {
+        $ref: '#/components/notFound',
+      },
+      500: {
+        $ref: '#/components/serverError',
+      },
+    },
+  },
 };
