@@ -1,7 +1,13 @@
 import { mockLoadSurveyResultRepository } from '@/data/mocks';
+import { LoadSurveyResultRepository } from '@/data/protocols/db/survey-result/load-survey-result/load-survey-result-repository';
 import { DbLoadSurveyResult } from './db-load-survey-result';
 
-const makeSut = (): any => {
+type SutTypes = {
+  sut: DbLoadSurveyResult;
+  loadSurveyResultRepositoryStub: LoadSurveyResultRepository;
+};
+
+const makeSut = (): SutTypes => {
   const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepository();
   const sut = new DbLoadSurveyResult(loadSurveyResultRepositoryStub);
   return {

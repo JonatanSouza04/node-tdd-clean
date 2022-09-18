@@ -1,5 +1,5 @@
 import { mockSurveyResultModel } from '@/domain/mocks';
-import { LoadSurveyResultRepository } from '../protocols/db/survey-result/load-survey-result/load-survey-result-repository';
+import { LoadSurveyResultRepository } from '@/data/protocols/db/survey-result/load-survey-result/load-survey-result-repository';
 import {
   SaveSurveyResultParamsModel,
   SaveSurveyResultRepository,
