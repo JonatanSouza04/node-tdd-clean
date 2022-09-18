@@ -1,46 +1,35 @@
 export class QueryBuilder {
   private readonly query = [];
 
-  match(data: Record<string, unknown>): QueryBuilder {
+  private addStep(step: string, data: Record<string, unknown>): QueryBuilder {
     this.query.push({
-      $match: data,
+      [step]: data,
     });
     return this;
+  }
+
+  match(data: Record<string, unknown>): QueryBuilder {
+    return this.addStep('$match', data);
   }
 
   group(data: Record<string, unknown>): QueryBuilder {
-    this.query.push({
-      $group: data,
-    });
-    return this;
+    return this.addStep('$group', data);
+  }
+
+  sort(data: Record<string, unknown>): QueryBuilder {
+    return this.addStep('$sort', data);
   }
 
   unwind(data: Record<string, unknown>): QueryBuilder {
-    this.query.push({
-      $unwind: data,
-    });
-    return this;
+    return this.addStep('$unwind', data);
   }
 
   lookup(data: Record<string, unknown>): QueryBuilder {
-    this.query.push({
-      $lookup: data,
-    });
-    return this;
-  }
-
-  addFields(data: Record<string, unknown>): QueryBuilder {
-    this.query.push({
-      $addFields: data,
-    });
-    return this;
+    return this.addStep('$lookup', data);
   }
 
   project(data: Record<string, unknown>): QueryBuilder {
-    this.query.push({
-      $project: data,
-    });
-    return this;
+    return this.addStep('$project', data);
   }
 
   build(): any[] {
