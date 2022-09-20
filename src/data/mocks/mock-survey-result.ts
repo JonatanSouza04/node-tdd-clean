@@ -9,10 +9,8 @@ import {
 export const mockSaveSurveyResultRepository =
   (): SaveSurveyResultRepository => {
     class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
-      async save(
-        data: SaveSurveyResultParamsModel,
-      ): Promise<SurveyResultModel> {
-        return await Promise.resolve(mockSurveyResultModel());
+      async save(data: SaveSurveyResultParamsModel): Promise<void> {
+        await Promise.resolve(mockSurveyResultModel());
       }
     }
     return new SaveSurveyResultRepositoryStub();
@@ -21,7 +19,10 @@ export const mockSaveSurveyResultRepository =
 export const mockLoadSurveyResultRepository =
   (): LoadSurveyResultRepository => {
     class LoadSurveyResultRepositoryStub implements LoadSurveyResultRepository {
-      async loadBySurveyId(surveyId: string): Promise<SurveyResultModel> {
+      async loadBySurveyId(
+        surveyId: string,
+        accountId: string,
+      ): Promise<SurveyResultModel> {
         return await Promise.resolve(mockSurveyResultModel());
       }
     }
