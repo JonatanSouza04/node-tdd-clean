@@ -1,7 +1,7 @@
 import {
   LoadSurveyResult,
   LoadSurveyResultRepository,
-} from '../survey/load-survey-result/db-load-survey-result-protocols';
+} from '../load-survey-result/db-load-survey-result-protocols';
 import {
   SaveSurveyResultRepository,
   SaveSurveyResultParamsModel,
