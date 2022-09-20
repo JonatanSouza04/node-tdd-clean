@@ -107,4 +107,49 @@ describe('SurveyResult Mongo Repository', () => {
       expect(surveyResult.answers[1].percent).toBe(0);
     });
   });
+
+  describe('loadBySurveyId', () => {
+    test('Should load survey resultw', async () => {
+      const sut = makeSut();
+
+      const survey = await makeSurvey();
+      const account = await makeAccount();
+      await surveyResultColletion.insertMany([
+        {
+          accountId: MongoHelper.objectID(account.id),
+          surveyId: MongoHelper.objectID(survey.id),
+          answer: survey.answers[0].answer,
+          date: new Date(),
+        },
+        {
+          accountId: MongoHelper.objectID(account.id),
+          surveyId: MongoHelper.objectID(survey.id),
+          answer: survey.answers[0].answer,
+          date: new Date(),
+        },
+        {
+          accountId: MongoHelper.objectID(account.id),
+          surveyId: MongoHelper.objectID(survey.id),
+          answer: survey.answers[1].answer,
+          date: new Date(),
+        },
+        {
+          accountId: MongoHelper.objectID(account.id),
+          surveyId: MongoHelper.objectID(survey.id),
+          answer: survey.answers[1].answer,
+          date: new Date(),
+        },
+      ]);
+
+      const surveyResult = await sut.loadBySurveyId(survey.id, account.id);
+      console.log(surveyResult);
+
+      expect(surveyResult).toBeTruthy();
+      expect(surveyResult.surveyId).toEqual(survey.id);
+      expect(surveyResult.answers[0].count).toBe(2);
+      expect(surveyResult.answers[0].percent).toBe(50);
+      expect(surveyResult.answers[1].count).toBe(2);
+      expect(surveyResult.answers[1].percent).toBe(50);
+    });
+  });
 });
