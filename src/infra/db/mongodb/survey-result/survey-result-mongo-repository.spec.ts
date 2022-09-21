@@ -125,7 +125,7 @@ describe('SurveyResult Mongo Repository', () => {
   });
 
   describe('loadBySurveyId', () => {
-    test('Should load survey resultw', async () => {
+    test('Should load survey result', async () => {
       const sut = makeSut();
 
       const survey = await makeSurvey();
@@ -167,6 +167,16 @@ describe('SurveyResult Mongo Repository', () => {
       expect(surveyResult.answers[1].count).toBe(2);
       expect(surveyResult.answers[1].percent).toBe(50);
       */
+    });
+
+    test('Should load survey result', async () => {
+      const sut = makeSut();
+      const surveyResult = await sut.loadBySurveyId(
+        '632a4970600e2b939be9474b',
+        '632a4978b92fa6b375b727e4',
+      );
+
+      expect(surveyResult).toBeNull();
     });
   });
 });
