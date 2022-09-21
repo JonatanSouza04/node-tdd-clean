@@ -1,6 +1,10 @@
-import { mockReturnNull } from '@/domain/mocks';
+import { mockReturnNull, mockThrowError } from '@/domain/mocks';
 import { InvalidParamError } from '@/presentation/erros';
-import { forbidden } from '@/presentation/helpers/http/http-helper';
+import {
+  badRequest,
+  forbidden,
+  serverError,
+} from '@/presentation/helpers/http/http-helper';
 import { mockLoadSurveyById } from '@/presentation/mocks';
 import { LoadSurveyResultController } from './load-survey-result-controller';
 import {
@@ -46,5 +50,21 @@ describe('LoadSurveyResult Controller', () => {
 
     const httpResponse = await sut.handle(mockRequest());
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('surveyId')));
+  });
+
+  test('Should return 400 if not exists param suveryId', async () => {
+    const { sut } = makeSut();
+
+    const httpResponse = await sut.handle({ accountId: 'any_account_id' });
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('surveyId')));
+  });
+
+  test('Should return 500s if LoadSurveyById throws', async () => {
+    const { sut, loadSurveyByIdStub } = makeSut();
+    jest
+      .spyOn(loadSurveyByIdStub, 'loadById')
+      .mockImplementationOnce(mockThrowError);
+    const httpResponse = await sut.handle(mockRequest());
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });
