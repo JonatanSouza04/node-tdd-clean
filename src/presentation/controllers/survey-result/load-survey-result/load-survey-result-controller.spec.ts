@@ -1,6 +1,9 @@
 import { mockLoadSurveyById } from '@/presentation/mocks';
 import { LoadSurveyResultController } from './load-survey-result-controller';
-import { HttpRequest } from './load-survey-result-controller-protocols';
+import {
+  HttpRequest,
+  LoadSurveyById,
+} from './load-survey-result-controller-protocols';
 
 const mockRequest = (): HttpRequest => ({
   params: {
@@ -9,7 +12,12 @@ const mockRequest = (): HttpRequest => ({
   accountId: 'any_account_id',
 });
 
-const makeSut = (): any => {
+type SutTypes = {
+  sut: LoadSurveyResultController;
+  loadSurveyByIdStub: LoadSurveyById;
+};
+
+const makeSut = (): SutTypes => {
   const loadSurveyByIdStub = mockLoadSurveyById();
   const sut = new LoadSurveyResultController(loadSurveyByIdStub);
 
