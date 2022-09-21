@@ -5,6 +5,7 @@ import {
   mockLoadSurveyByIdRepository,
   mockSurveyResultModel,
   mockThrowError,
+  mockSurveyResultEmptyModel,
 } from './db-load-survey-result-protocols';
 
 import { DbLoadSurveyResult } from './db-load-survey-result';
@@ -76,6 +77,16 @@ describe('DbLoadSurveyResult UseCase', () => {
       .mockReturnValueOnce(Promise.resolve(null));
     await sut.load('any_survey_id', 'any_account_id');
     expect(loadByIdSpy).toHaveBeenCalledWith('any_survey_id');
+  });
+
+  test('Should return surveyResultModel with all answers with count 0 if LoadSurveyResultRepository returns null', async () => {
+    const { sut, loadSurveyResultRepositoryStub } = makeSut();
+
+    jest
+      .spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
+      .mockReturnValueOnce(Promise.resolve(null));
+    const surveyResult = await sut.load('any_id', 'any_account_id');
+    expect(surveyResult).toEqual(mockSurveyResultEmptyModel());
   });
 
   test('Should return surveyResultModel on success', async () => {
