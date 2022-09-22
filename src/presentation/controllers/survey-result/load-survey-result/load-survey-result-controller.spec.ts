@@ -5,11 +5,12 @@ import {
   forbidden,
   serverError,
 } from '@/presentation/helpers/http/http-helper';
-import { mockLoadSurveyById } from '@/presentation/mocks';
+import { mockLoadSurveyById, mockLoadSurveyResult } from '@/presentation/mocks';
 import { LoadSurveyResultController } from './load-survey-result-controller';
 import {
   HttpRequest,
   LoadSurveyById,
+  LoadSurveyResult,
 } from './load-survey-result-controller-protocols';
 
 const mockRequest = (): HttpRequest => ({
@@ -22,15 +23,21 @@ const mockRequest = (): HttpRequest => ({
 type SutTypes = {
   sut: LoadSurveyResultController;
   loadSurveyByIdStub: LoadSurveyById;
+  loadSurveyResultStub: LoadSurveyResult;
 };
 
 const makeSut = (): SutTypes => {
   const loadSurveyByIdStub = mockLoadSurveyById();
-  const sut = new LoadSurveyResultController(loadSurveyByIdStub);
+  const loadSurveyResultStub = mockLoadSurveyResult();
+  const sut = new LoadSurveyResultController(
+    loadSurveyByIdStub,
+    loadSurveyResultStub,
+  );
 
   return {
     sut,
     loadSurveyByIdStub,
+    loadSurveyResultStub,
   };
 };
 
@@ -55,7 +62,12 @@ describe('LoadSurveyResult Controller', () => {
   test('Should return 400 if not exists param suveryId', async () => {
     const { sut } = makeSut();
 
-    const httpResponse = await sut.handle({ accountId: 'any_account_id' });
+    const httpResponse = await sut.handle({
+      accountId: 'any_account_id',
+      params: {
+        surveyId: null,
+      },
+    });
     expect(httpResponse).toEqual(badRequest(new InvalidParamError('surveyId')));
   });
 
@@ -66,5 +78,12 @@ describe('LoadSurveyResult Controller', () => {
       .mockImplementationOnce(mockThrowError);
     const httpResponse = await sut.handle(mockRequest());
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  test('Should call LoadSurveyResult with correct value', async () => {
+    const { sut, loadSurveyResultStub } = makeSut();
+    const loadSpy = jest.spyOn(loadSurveyResultStub, 'load');
+    await sut.handle(mockRequest());
+    expect(loadSpy).toHaveBeenCalledWith('any_survey_id', 'any_account_id');
   });
 });
