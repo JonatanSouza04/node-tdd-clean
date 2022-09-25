@@ -1,4 +1,5 @@
 import { MongoClient, Collection, ObjectId } from 'mongodb';
+import round from 'mongo-round';
 
 export const MongoHelper = {
   client: null as unknown as MongoClient,
@@ -32,5 +33,9 @@ export const MongoHelper = {
 
   objectID(id: string): ObjectId {
     return new ObjectId(id);
+  },
+
+  numberRound(value: string): number {
+    return round(value);
   },
 };
