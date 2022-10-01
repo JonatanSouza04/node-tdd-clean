@@ -1,4 +1,4 @@
-import { LoginController } from './login-controller';
+import { LoginController, Request } from './login-controller';
 import {
   badRequest,
   serverError,
@@ -7,14 +7,11 @@ import {
 } from '../../helpers/http/http-helper';
 import { MissingParamError } from '../../erros';
 
-import {
-  HttpRequest,
-  Authentication,
-  Validation,
-} from './login-controller-protocols';
+import { Authentication, Validation } from './login-controller-protocols';
 import { mockThrowError } from '@/domain/mocks';
 import { mockValidation } from '@/validation/mocks';
 import { mockAuthentication } from '@/presentation/mocks';
+import { faker } from '@faker-js/faker';
 
 type SutTypes = {
   sut: LoginController;
@@ -34,21 +31,20 @@ const makeSut = (): SutTypes => {
   };
 };
 
-const mockRequest = (): HttpRequest => ({
-  body: {
-    email: 'any_email@gmail.com',
-    password: 'any_password',
-  },
+const mockRequest = (): Request => ({
+  email: faker.internet.email.toString(),
+  password: faker.internet.password.toString(),
 });
 
 describe('Login Controller', () => {
   test('Should call Authentication with correct values', async () => {
     const { sut, authenticationStub } = makeSut();
     const authSpy = jest.spyOn(authenticationStub, 'auth');
-    await sut.handle(mockRequest());
+    const request = mockRequest();
+    await sut.handle(request);
     expect(authSpy).toHaveBeenCalledWith({
-      email: 'any_email@gmail.com',
-      password: 'any_password',
+      email: request.email,
+      password: request.password,
     });
   });
 
@@ -81,10 +77,10 @@ describe('Login Controller', () => {
     const { sut, validationStub } = makeSut();
     const validateSpy = jest.spyOn(validationStub, 'validate');
 
-    const httpRequest = mockRequest();
-    await sut.handle(httpRequest);
+    const request = mockRequest();
+    await sut.handle(request);
 
-    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
+    expect(validateSpy).toHaveBeenCalledWith(request);
   });
 
   test('Should return 400 if Validation returns an error', async () => {

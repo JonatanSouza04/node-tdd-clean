@@ -1,6 +1,8 @@
-import { SaveSurveyResultController } from './save-survey-result-controller';
 import {
-  HttpRequest,
+  SaveSurveyResultController,
+  Request,
+} from './save-survey-result-controller';
+import {
   LoadSurveyById,
   SaveSurveyResult,
 } from './save-survey-result-controller-protocols';
@@ -20,23 +22,16 @@ type SutTypes = {
   saveSurveyResultStub: SaveSurveyResult;
 };
 
-const mockRequest = (): HttpRequest => ({
-  params: {
-    surveyId: 'any_survey_id',
-  },
-  body: {
-    answer: 'any_answer',
-  },
+const mockRequest = (): Request => ({
+  surveyId: 'any_survey_id',
+  answer: 'any_answer',
   accountId: 'any_account_id',
 });
 
-const mockRequestAnswerInvalid = (): HttpRequest => ({
-  params: {
-    surveyId: 'any_survey_id',
-  },
-  body: {
-    answer: 'wrong_answer',
-  },
+const mockRequestAnswerInvalid = (): Request => ({
+  surveyId: 'any_survey_id',
+  answer: 'wrong_answer',
+  accountId: null,
 });
 
 const makeSut = (): SutTypes => {

@@ -1,6 +1,6 @@
 import { AccountModel, AddAccountParamsModel } from '@/domain/models/account';
 import { AuthenticationParamsModel } from '@/domain/models/authentication';
-import { HttpRequest } from '@/presentation/protocols';
+import { Request } from '@/presentation/controllers/signup/signup-controller';
 
 export const mockAddAccountParams = (): AddAccountParamsModel => ({
   name: 'any_name',
@@ -20,13 +20,11 @@ export const mockAccountModelWithRoleParams = (): AddAccountParamsModel =>
     role: 'admin',
   });
 
-export const mockRequestAddAccount = (): HttpRequest => ({
-  body: {
-    name: 'any_name',
-    email: 'any_email@mail.com',
-    password: 'any_password',
-    passwordConfirm: 'any_password',
-  },
+export const mockRequestAddAccount = (): Request => ({
+  name: 'any_name',
+  email: 'any_email@mail.com',
+  password: 'any_password',
+  passwordConfirm: 'any_password',
 });
 
 export const mockAuthentication = (): AuthenticationParamsModel => ({

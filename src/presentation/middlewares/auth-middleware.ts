@@ -1,11 +1,14 @@
 import { ForbiddenError } from '../erros';
 import { forbidden, ok, serverError } from '../helpers/http/http-helper';
 import {
-  HttpRequest,
   HttpResponse,
   Middleware,
   LoadAccountByToken,
 } from './auth-middlewares-protocols';
+
+export type Request = {
+  accessToken?: string;
+};
 
 export class AuthMiddleware implements Middleware {
   constructor(
@@ -13,9 +16,9 @@ export class AuthMiddleware implements Middleware {
     private readonly role?: string,
   ) {}
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(request: Request): Promise<HttpResponse> {
     try {
-      const accessToken = httpRequest.headers?.['x-access-token'];
+      const { accessToken } = request;
       if (accessToken) {
         const account = await this.loadAccountByToken.load(
           accessToken,

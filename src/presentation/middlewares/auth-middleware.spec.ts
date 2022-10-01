@@ -1,7 +1,7 @@
+import { AuthMiddleware, Request } from './auth-middleware';
+import { LoadAccountByToken } from './auth-middlewares-protocols';
 import { forbidden, ok, serverError } from '../helpers/http/http-helper';
 import { ForbiddenError } from '../erros';
-import { AuthMiddleware } from './auth-middleware';
-import { LoadAccountByToken, HttpRequest } from './auth-middlewares-protocols';
 import { mockThrowError } from '@/domain/mocks';
 import { mockLoadAccountByToken } from '../mocks';
 
@@ -10,10 +10,8 @@ type SutTypes = {
   loadAccountByToken: LoadAccountByToken;
 };
 
-const mockRequest = (): HttpRequest => ({
-  headers: {
-    'x-access-token': 'any_token',
-  },
+const mockRequest = (): Request => ({
+  accessToken: 'any_token',
 });
 
 const makeSut = (role?: string): SutTypes => {

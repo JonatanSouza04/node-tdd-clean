@@ -11,18 +11,18 @@ import {
   serverError,
 } from '@/presentation/helpers/http/http-helper';
 import { mockLoadSurveyById, mockLoadSurveyResult } from '@/presentation/mocks';
-import { LoadSurveyResultController } from './load-survey-result-controller';
 import {
-  HttpRequest,
+  LoadSurveyResultController,
+  Request,
+} from './load-survey-result-controller';
+import {
   LoadSurveyById,
   LoadSurveyResult,
 } from './load-survey-result-controller-protocols';
 import mockDate from 'mockdate';
 
-const mockRequest = (): HttpRequest => ({
-  params: {
-    surveyId: 'any_survey_id',
-  },
+const mockRequest = (): Request => ({
+  surveyId: 'any_survey_id',
   accountId: 'any_account_id',
 });
 
@@ -69,20 +69,18 @@ describe('LoadSurveyResult Controller', () => {
       .spyOn(loadSurveyByIdStub, 'loadById')
       .mockImplementationOnce(mockReturnNull);
 
-    const httpResponse = await sut.handle(mockRequest());
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('surveyId')));
+    const request = await sut.handle(mockRequest());
+    expect(request).toEqual(forbidden(new InvalidParamError('surveyId')));
   });
 
   test('Should return 400 if not exists param suveryId', async () => {
     const { sut } = makeSut();
 
-    const httpResponse = await sut.handle({
+    const request = await sut.handle({
       accountId: 'any_account_id',
-      params: {
-        surveyId: null,
-      },
+      surveyId: null,
     });
-    expect(httpResponse).toEqual(badRequest(new InvalidParamError('surveyId')));
+    expect(request).toEqual(badRequest(new InvalidParamError('surveyId')));
   });
 
   test('Should return 500s if LoadSurveyById throws', async () => {
@@ -90,8 +88,8 @@ describe('LoadSurveyResult Controller', () => {
     jest
       .spyOn(loadSurveyByIdStub, 'loadById')
       .mockImplementationOnce(mockThrowError);
-    const httpResponse = await sut.handle(mockRequest());
-    expect(httpResponse).toEqual(serverError(new Error()));
+    const request = await sut.handle(mockRequest());
+    expect(request).toEqual(serverError(new Error()));
   });
 
   test('Should call LoadSurveyResult with correct value', async () => {
@@ -103,8 +101,8 @@ describe('LoadSurveyResult Controller', () => {
 
   test('Should return 200 on success', async () => {
     const { sut } = makeSut();
-    const httpResponse = await sut.handle(mockRequest());
-    expect(httpResponse).toEqual(ok(mockSurveyResultModel()));
+    const request = await sut.handle(mockRequest());
+    expect(request).toEqual(ok(mockSurveyResultModel()));
   });
 
   test('Should return 500 if LoadSurveyResult throws', async () => {
@@ -112,7 +110,7 @@ describe('LoadSurveyResult Controller', () => {
     jest
       .spyOn(loadSurveyResultStub, 'load')
       .mockImplementationOnce(mockThrowError);
-    const httpResponse = await sut.handle(mockRequest());
-    expect(httpResponse).toEqual(serverError(new Error()));
+    const request = await sut.handle(mockRequest());
+    expect(request).toEqual(serverError(new Error()));
   });
 });

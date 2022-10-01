@@ -6,11 +6,16 @@ import {
 } from '@/presentation/helpers/http/http-helper';
 import {
   Controller,
-  HttpRequest,
   HttpResponse,
   LoadSurveyById,
   SaveSurveyResult,
 } from './save-survey-result-controller-protocols';
+
+export type Request = {
+  surveyId: string;
+  accountId: string;
+  answer: string;
+};
 
 export class SaveSurveyResultController implements Controller {
   constructor(
@@ -18,11 +23,9 @@ export class SaveSurveyResultController implements Controller {
     private readonly saveSurveyResult: SaveSurveyResult,
   ) {}
 
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(request: Request): Promise<HttpResponse> {
     try {
-      const { surveyId } = httpRequest.params;
-      const { accountId } = httpRequest;
-      const { answer } = httpRequest.body;
+      const { surveyId, accountId, answer } = request;
       const suryey = await this.loadSurveyById.loadById(surveyId);
 
       if (suryey) {
